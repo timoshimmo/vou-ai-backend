@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "tsx index.ts"
+    "dev": "tsx index.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
