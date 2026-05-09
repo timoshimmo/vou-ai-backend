@@ -8,6 +8,17 @@ import tryonRoutes from "./routes/tryons";
 
 const app = express();
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/vou-ai";
+
+// Ensure MongoDB is connected
+if (mongoose.connection.readyState === 0) {
+  mongoose.set('strictQuery', false);
+  mongoose.connect(MONGODB_URI)
+    .then(() => console.log("[DATABASE] Connected to MongoDB via backend/app.ts"))
+    .catch(err => {
+      console.error("[DATABASE] MongoDB connection error in backend/app.ts:", err);
+    });
+}
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
