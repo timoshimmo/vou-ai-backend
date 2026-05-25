@@ -99,6 +99,7 @@ router.post("/estimate", async (req: any, res) => {
       ...measurements,
       confidence: 0.94,
       userId: req.user.userId,
+      image, // Store base64 image
     });
     await measurementDoc.save();
 
@@ -109,32 +110,21 @@ router.post("/estimate", async (req: any, res) => {
   }
 });
 
-export default router;
-
-
-/*import express from "express";
-import { Measurement } from "../models/Measurement";
-
-const router = express.Router();
-
-router.get("/", async (req: any, res) => {
+router.patch("/:id", async (req: any, res) => {
   try {
-    const measurements = await Measurement.find({ userId: req.user.userId }).sort({ timestamp: -1 });
-    res.json(measurements);
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-router.post("/", async (req: any, res) => {
-  try {
-    const measurement = new Measurement({ ...req.body, userId: req.user.userId });
-    await measurement.save();
-    res.status(201).json(measurement);
+    const { name } = req.body;
+    const measurement = await Measurement.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user.userId },
+      { name },
+      { new: true }
+    );
+    if (!measurement) {
+      return res.status(404).json({ error: "Measurement not found" });
+    }
+    res.json(measurement);
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
 });
 
 export default router;
-*/

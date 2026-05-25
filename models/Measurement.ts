@@ -9,7 +9,10 @@ const measurementSchema = new mongoose.Schema({
   sleeve: { type: Number },
   inseam: { type: Number },
   confidence: { type: Number },
+  name: { type: String, default: "Body Measurement" },
+  image: { type: String },
   timestamp: { type: Date, default: Date.now }
 });
 
 export const Measurement = mongoose.model('Measurement', measurementSchema);
+
